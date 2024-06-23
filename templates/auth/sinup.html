@@ -8,7 +8,7 @@
       روی لینک توی ایمیل کلیک کنید تا اکانت شما فعال شود</p>
     </div>
     {% else %}
-    <form method="post">
+    <form method="post" onsubmit="return validateAcceptRules()">
       {% csrf_token %}
       <div class="space-y-12">
         <div class="border-b space-y-4 border-gray-900/10 pb-12">
@@ -38,10 +38,6 @@
                 {% for error in sinupForm.email.errors %}
                   <p class="mt-2 text-sm text-red-600">{{ error }}</p>
                 {% endfor %}
-                <!-- <input type="text" name="email" id="email"
-                  class="block w-full rounded-md border-0 py-1.5 pr-10 text-slate-950 ring-1 ring-inset ring-slate-500 placeholder:text-slate-500 focus:ring-2 focus:ring-inset focus:ring-cyan-200 sm:text-sm sm:leading-6"
-                  placeholder="you@example.com" value="بهمن" aria-invalid="true" aria-describedby="email-error"> -->
-                
               </div>
             </div>
             <div class="ml-4">
@@ -62,9 +58,6 @@
                     {% for error in sinupForm.username.errors %}
                       <p class="mt-2 text-sm text-red-600">{{ error }}</p>
                     {% endfor %}
-                <!-- <input type="text" name="email" id="email"
-                  class="block w-full rounded-md border-0 py-1.5 pr-10 text-slate-950 ring-1 ring-inset ring-slate-500 placeholder:text-slate-500 focus:ring-2 focus:ring-inset focus:ring-cyan-200 sm:text-sm sm:leading-6"
-                  placeholder="you@example.com" value="بهمنی" aria-invalid="true" aria-describedby="email-error"> -->
               </div>
             </div>
           </div>
@@ -80,9 +73,6 @@
               <div class="relative mt-2 rounded-md shadow-sm">
                 {{ sinupForm.password1 }}
                 {% if sinupForm_msg %}
-                <!-- <input type="password" name="email" id="email"
-                  class="block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6"
-                  placeholder="you@example.com" value="adamwathan" aria-invalid="true" aria-describedby="email-error"> -->
                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pr-3">
                   <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd"
@@ -105,9 +95,6 @@
               <div class="relative mt-2 rounded-md shadow-sm">
                 {{ sinupForm.password2 }}
                 {% if sinupForm_msg %}
-                <!-- <input type="password" name="email" id="email"
-                  class="block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6"
-                  placeholder="you@example.com" value="adamwathan" aria-invalid="true" aria-describedby="email-error"> -->
                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pr-3">
                   <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd"
@@ -133,9 +120,6 @@
               <div class="relative mt-2 rounded-md shadow-sm">
                 {{ profileForm.phone_number }}
                 {% if sinupForm_msg %}
-                <!-- <input type="number" name="email" id="email"
-                  class="block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6"
-                  placeholder="you@example.com" value="adamwathan" aria-invalid="true" aria-describedby="email-error"> -->
                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pr-3">
                   <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd"
@@ -154,12 +138,13 @@
           <p>قوانین</p>
           <div class="relative flex gap-x-3">
             <div class="flex h-6 items-center">
-              <input id="comments" name="comments" type="checkbox"
+              <input id="accept-rules" onclick="validateAcceptRules()" name="comments" type="checkbox"
                 class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
             </div>
             <div class="text-sm leading-6">
-              <label for="comments" class="font-medium text-gray-900">قوانین را خوانده ام و آنها را میپذیرم.</label>
+              <label for="accept-rules" class="font-medium text-gray-900">قوانین را خوانده ام و آنها را میپذیرم.</label>
               <div class="h-4"></div>
+              <p id="accept-rules-error" class="my-2 rounded-md p-2 bg-red-400 text-center">قوانین را بخوانید و بپذیرید</p>
               <a href="/rules" class="text-gray-800 p-2 text-center bg-amber-600 rounded-md">مشاهده قوانین</a>
             </div>
           </div>
@@ -176,6 +161,18 @@
 
       </div>
     </form>
+    <script>
+      accept_rules_error = document.getElementById('accept-rules-error');
+      function validateAcceptRules(){
+        if (document.getElementById('accept-rules').checked) {
+          accept_rules_error.classList.add('hidden');
+          return true
+        } else {
+          accept_rules_error.classList.remove('hidden');
+          return false
+        }
+      }
+    </script>
     {% endif %}
   </div>
 {% endblock %}

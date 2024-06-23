@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import View
 from .models import User, EmailConfirm
 from .forms import UserSinupForm, ProfileForm, ForgetPasswordForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
 from datetime import datetime, timedelta
 from dateutil import tz
@@ -19,6 +19,12 @@ def send_email(email, code, your_request_type, email_send_type):
     recipient_list = [email]
     response = send_mail(subject, message, from_email, recipient_list)
     return response
+
+
+def logout_view(request):
+    if request.user:
+        logout(request)
+    return redirect('login')
 
 
 class LoginView(View):

@@ -20,4 +20,9 @@ def count_username(value):
 
 
 def phone_number(value):
-    pass
+    str_value = str(value)
+    if len(str_value) != 10:
+        raise ValidationError(_("شماره تلفن باید 10 رقم باشه"))
+    elif str_value[0] != '9':
+        raise ValidationError(_("شماره تلفن باید با 9 شروع شود"))
+    return value

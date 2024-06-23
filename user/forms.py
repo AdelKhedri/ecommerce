@@ -5,9 +5,10 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 from .models import User, Profile
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from .validatiors import phone_number
 
 
-email_password_attrs = {'class': 'block w-full rounded-md border-0 py-1.5 pr-10 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 bg-white'}
+default_attrs = {'class': 'block w-full rounded-md border-0 py-1.5 pr-10 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 bg-white'}
 
 class CostumeUserChangeForm(UserChangeForm):
     groups = forms.ModelMultipleChoiceField(
@@ -25,7 +26,7 @@ class CostumeUserChangeForm(UserChangeForm):
 
 
 class CostumUserCreationForm(UserCreationForm):
-    phone_number = forms.IntegerField(widget=forms.NumberInput(attrs=email_password_attrs), label="شماره تلفن")
+    phone_number = forms.IntegerField(validators=[phone_number], widget=forms.NumberInput(attrs=default_attrs), label="شماره تلفن")
 
     class Meta:
         model = User
@@ -40,21 +41,21 @@ class CostumUserCreationForm(UserCreationForm):
 
 
 class UserLoginForm(forms.Form):
-    email = forms.EmailField(max_length=150, label='ایمیل', widget=forms.EmailInput(attrs=email_password_attrs))
-    password = forms.CharField(max_length=150, label='رمزعبور', widget=forms.PasswordInput(attrs=email_password_attrs))
+    email = forms.EmailField(max_length=150, label='ایمیل', widget=forms.EmailInput(attrs=default_attrs))
+    password = forms.CharField(max_length=150, label='رمزعبور', widget=forms.PasswordInput(attrs=default_attrs))
 
 
 class UserSinupForm(forms.ModelForm):
-    password1 = forms.CharField(max_length=150, label="رمز عبور", widget=forms.PasswordInput(attrs=email_password_attrs))
-    password2 = forms.CharField(max_length=150, label="تکرار رمز عبور", widget=forms.PasswordInput(attrs=email_password_attrs))
+    password1 = forms.CharField(max_length=150, label="رمز عبور", widget=forms.PasswordInput(attrs=default_attrs))
+    password2 = forms.CharField(max_length=150, label="تکرار رمز عبور", widget=forms.PasswordInput(attrs=default_attrs))
 
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
         widgets = {
-            'username': forms.TextInput(attrs=email_password_attrs),
-            'email': forms.EmailInput(attrs=email_password_attrs),
+            'username': forms.TextInput(attrs=default_attrs),
+            'email': forms.EmailInput(attrs=default_attrs),
         }
     
     def clean_password2(self):
@@ -77,19 +78,19 @@ class UserSinupForm(forms.ModelForm):
 
 
 class ProfileForm(forms.ModelForm):
+    phone_number = forms.IntegerField(validators=[phone_number], widget=forms.NumberInput(attrs=default_attrs))
     class Meta:
         model = Profile
         exclude = ['coin', 'user', ]
 
         widgets = {
             'image': forms.FileInput(attrs={}),
-            'phone_number': forms.NumberInput(attrs=email_password_attrs),
         }
 
 
 class ForgetPasswordForm(forms.Form):
-    password = forms.CharField(max_length=150, widget=forms.PasswordInput(attrs=email_password_attrs))
-    password2 = forms.CharField(max_length=150, widget=forms.PasswordInput(attrs=email_password_attrs))
+    password = forms.CharField(max_length=150, widget=forms.PasswordInput(attrs=default_attrs))
+    password2 = forms.CharField(max_length=150, widget=forms.PasswordInput(attrs=default_attrs))
 
     def clean(self):
         data = super().clean()

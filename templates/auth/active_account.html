@@ -1,0 +1,19 @@
+{% extends 'auth/base_auth.html' %}
+{% load static %}
+
+{% block title %} صفحه تایید ایمیل {% endblock %}
+
+{% block context %}
+<div class="container lg:max-w-[50%] md:max-w-[80%] mx-auto p-4 bg-slate-100 rounded-lg my-7 mb-10 shadow-lg shadow-gray-400">
+  <img class="mx-auto lg:max-w-[50%] md:max-w-[40%]" src="{% static 'images/check.png' %}" alt="اکانت فعال شد" srcset="">
+  <div class="mt-4 border-2 py-3 text-lg border-green-800 rounded-md bg-green-400 text-center">
+    <p>{{ email }} خوش امدید اکنون حساب شما تایید شده و فعال است از لینک های زیر استفاده کنید</p>
+  </div>
+  <div class="flex justify-center mt-4 ">
+    <a href="/login/" class="bg-gray-300 hover:bg-gray-400 shadow-md shadow-slate-600 p-2 rounded-md mx-2">ورود</a>
+    <a href="/" class="bg-gray-300 hover:bg-gray-400 shadow-md shadow-slate-600 p-2 rounded-md mx-2">خانه</a>
+    <a href="/rules/" class="bg-gray-300 hover:bg-gray-400 shadow-md shadow-slate-600 p-2 rounded-md mx-2">قوانین</a>
+  </div>
+</div>
+
+{% endblock %}

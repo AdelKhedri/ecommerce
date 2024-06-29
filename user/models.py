@@ -10,12 +10,13 @@ def codeGenerator():
     return uuid4().hex[:20]
 
 class Profile(models.Model):
-    coin = models.IntegerField(default=0, verbose_name="موجودی")
+    coin = models.IntegerField(default=0, blank=True, verbose_name="موجودی")
     image = models.ImageField(upload_to="images/profile/", blank=True, verbose_name="عکس")
     user = models.OneToOneField('User', on_delete=models.CASCADE, verbose_name="کاربر")
     birth_day = models.DateField(blank=True, null=True)
     phone_number = models.BigIntegerField(unique=True, verbose_name='شماره تلفن')
-
+    biography = models.CharField(max_length=500, blank=True, default='من به فروشگاه پیوستم!', verbose_name="درباره")
+    
     class Meta:
         verbose_name = 'پروفایل'
         verbose_name_plural = 'پروفایل ها'
@@ -65,7 +66,7 @@ class User(AbstractUser, PermissionsMixin):
         },
         validators=[validatiors.count_username]) #validatiors.UsernameCharValidatior(), 
     gender = models.CharField(blank=True, choices=GenderType.choices, max_length=1, verbose_name="جنسیت")
-    email = models.EmailField(max_length=255, unique=True, error_messages={'unique': 'test'}, verbose_name="ایمیل")
+    email = models.EmailField(max_length=255, unique=True, error_messages={'unique': 'کاربر با این ایمیل وجود دارد'}, verbose_name="ایمیل")
     is_active = models.BooleanField(default=False, verbose_name='فعال')
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

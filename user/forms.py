@@ -9,6 +9,9 @@ from .validatiors import phone_number
 
 
 default_attrs = {'class': 'block w-full rounded-md border-0 py-1.5 pr-10 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 bg-white'}
+black_input_attrs = {'class': 'ring-1 rounded-md p-1 ring-slate-300 w-full'}
+error_attrs = 'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
+birth_day_attrs = {'placeholder': '1403-05-23', 'class': 'ring-1 rounded-md p-1 ring-slate-300 w-full'}
 
 class CostumeUserChangeForm(UserChangeForm):
     groups = forms.ModelMultipleChoiceField(
@@ -76,16 +79,33 @@ class UserSinupForm(forms.ModelForm):
             raise ValidationError(_("ایمیل تکراری است"))
         return email
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            if self[field].errors:
+                field_name = self.fields[field].widget.attrs
+                field_name.update({'class': f'{field_name} {error_attrs}'})
+
 
 class ProfileForm(forms.ModelForm):
     phone_number = forms.IntegerField(validators=[phone_number], widget=forms.NumberInput(attrs=default_attrs))
+
     class Meta:
         model = Profile
-        exclude = ['coin', 'user', ]
+        exclude = ['user', 'coin']
 
         widgets = {
-            'image': forms.FileInput(attrs={}),
+            'image': forms.FileInput(attrs=black_input_attrs),
+            'birth_day': forms.DateInput(attrs=birth_day_attrs),
+            'biography': forms.Textarea(attrs=black_input_attrs),
         }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            if self[field].errors:
+                field_name = self.fields[field].widget.attrs
+                field_name.update({'class': f'{field_name} {error_attrs}'})
 
 
 class ForgetPasswordForm(forms.Form):
@@ -97,3 +117,23 @@ class ForgetPasswordForm(forms.Form):
         if data['password'] != data['password2']:
             raise ValidationError(_('پسورد ها با هم مطابقت ندارند'))
         return data
+
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['last_name', 'first_name', 'username', 'email', 'gender']
+        widgets = {
+            'last_name' : forms.TextInput(attrs=default_attrs),
+            'first_name' : forms.TextInput(attrs=default_attrs),
+            'username' : forms.TextInput(attrs=default_attrs),
+            'email' : forms.EmailInput(attrs=default_attrs),
+            'gender' : forms.Select(attrs=default_attrs),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            if self[field].errors:
+                field_name = self.fields[field].widget.attrs
+                field_name.update({'class': f'{field_name} {error_attrs}'})

@@ -5,7 +5,7 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 from .models import User, Profile
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from .validatiors import phone_number
+from .validatiors import clean_password, phone_number
 
 
 default_attrs = {'class': 'block w-full rounded-md border-0 py-1.5 pr-10 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 bg-white'}
@@ -88,7 +88,7 @@ class UserSinupForm(forms.ModelForm):
 
 
 class ProfileForm(forms.ModelForm):
-    phone_number = forms.IntegerField(validators=[phone_number], widget=forms.NumberInput(attrs=default_attrs))
+    phone_number = forms.IntegerField(label="شماره تلفن", validators=[phone_number], widget=forms.NumberInput(attrs=default_attrs))
 
     class Meta:
         model = Profile
@@ -137,3 +137,15 @@ class UserUpdateForm(forms.ModelForm):
             if self[field].errors:
                 field_name = self.fields[field].widget.attrs
                 field_name.update({'class': f'{field_name} {error_attrs}'})
+
+
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(max_length=150, label='رمز قبلی', widget=forms.PasswordInput(attrs=black_input_attrs))
+    new_password1 = forms.CharField(max_length=150, label='رمز جدید', validators=[clean_password], widget=forms.PasswordInput(attrs=black_input_attrs))
+    new_password2 = forms.CharField(max_length=150, label='تکرار رمز جدید', validators=[clean_password], widget=forms.PasswordInput(attrs=black_input_attrs))
+
+    def clean(self):
+        data = super().clean()
+        if data.get('new_password1') != data.get('new_password2'):
+            raise ValidationError(_("پسورد ها باید مشابه هم باشند"))
+        return data

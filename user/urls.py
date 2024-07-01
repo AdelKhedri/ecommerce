@@ -11,6 +11,7 @@ urlpatterns = [
     path('forgetPassword/confirm/<str:email>/<str:code>', views.ConfirmForgetPasswordView.as_view(), name="confirm forget password"),
     path('logout', views.logout_view, name='logout'),
     path('user/profile/', views.ProfileView.as_view(),name="profile"),
+    path('user/changePassword/', views.ChangePasswordView.as_view(),name="change password"),
 ]
 
 if settings.DEBUG:

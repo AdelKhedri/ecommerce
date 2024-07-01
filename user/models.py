@@ -13,7 +13,7 @@ class Profile(models.Model):
     coin = models.IntegerField(default=0, blank=True, verbose_name="موجودی")
     image = models.ImageField(upload_to="images/profile/", blank=True, verbose_name="عکس")
     user = models.OneToOneField('User', on_delete=models.CASCADE, verbose_name="کاربر")
-    birth_day = models.DateField(blank=True, null=True)
+    birth_day = models.DateField(blank=True, null=True, verbose_name="تاریخ تولد")
     phone_number = models.BigIntegerField(unique=True, verbose_name='شماره تلفن')
     biography = models.CharField(max_length=500, blank=True, default='من به فروشگاه پیوستم!', verbose_name="درباره")
     

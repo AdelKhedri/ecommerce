@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from .models import User, EmailConfirm
-from .forms import UserSinupForm, ProfileForm, ForgetPasswordForm, UserUpdateForm
+from .forms import UserSinupForm, ProfileForm, ForgetPasswordForm, UserUpdateForm, ChangePasswordForm
 from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
 from datetime import datetime, timedelta
@@ -203,4 +203,31 @@ class ProfileView(LoginRequiredMixin, View):
                 context.update({'userForm_msg': 'not valid'})
             context.update({'userForm': userInstance})
         
+        return render(request, self.template_name, context)
+
+
+class ChangePasswordView(LoginRequiredMixin, View):
+    template_name = 'user/change_password.html'
+
+    def get(self, request, *arg, **kwargs):
+        context = {
+            'changePasswordForm': ChangePasswordForm()
+        }
+        return render(request, self.template_name, context)
+    
+    def post(self, request, *arg, **kwargs):
+        changePasswordInstance = ChangePasswordForm(request.POST)
+        context = {
+            'changePasswordForm': changePasswordInstance
+        }
+        if changePasswordInstance.is_valid():
+            user = authenticate(request, email=request.user.email, password=changePasswordInstance.cleaned_data['old_password'])
+            if user is not None:
+                user = request.user
+                user.set_password(changePasswordInstance.cleaned_data['new_password1'])
+                user.save()
+                logout(request)
+                return redirect('login')
+            else:
+                context.update({'changePasswordForm_msg': 'old_passwod error'})
         return render(request, self.template_name, context)

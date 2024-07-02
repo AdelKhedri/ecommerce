@@ -4,3 +4,4 @@ media/
 tailwindcss.config.js
 db.sqlite3
 __pycache__
+*/migrations/0*.py

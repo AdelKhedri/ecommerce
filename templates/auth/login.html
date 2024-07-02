@@ -1,0 +1,56 @@
+{% extends 'auth/base_auth.html' %}
+
+{% block title %} ورود {% endblock %}
+{% block context %}
+<!-- Sign In -->
+<div id="signin-form" class="container lg:max-w-[50%] md:max-w-[80%] mx-auto p-4 bg-slate-100 rounded-lg my-7 mb-10 shadow-lg shadow-gray-400">
+  <form method="post">
+    {% csrf_token %}
+    <div class="space-y-12">
+      <div class="border-b border-gray-900/10 pb-12">
+        <h2 class="text-base font-semibold leading-7 text-gray-900">ورود</h2>
+        <p class="mt-1 text-sm leading-6 text-gray-600">فرم ورود.</p>
+        {% if msg == 'email or password error' %}
+        <p class="bg-orange-200 my-2 p-1 rounded-md text-red-600">ایمیل یا پسورد اشتباه است.</p>
+        {% elif msg == 'not valid' %}
+          <p class="bg-orange-200 p-1 rounded-md text-red-600">لطفا همه فیلد های دارای ستاره قرمز را پرکنید</p>
+        {% endif %}
+        <div class="grid md:grid-cols-2 sm:grid-cols-2 ">
+
+          {% include 'auth/emailfield.html' %}
+          <div class="ml-4">
+            <div class="flex justify-between">
+              <label for="password" class="block text-sm font-medium leading-6 {% if msg %}text-red-500{% else %}text-gray-900{% endif %}">رمز عبور</label>
+              <span class="text-lg lg:text-2xl leading-6 text-red-600" id="email-optional">*</span>
+            </div>
+            <div class="relative mt-2 rounded-md shadow-sm">
+              <input type="password" name="password" id="password" required
+              class="block w-full rounded-md border-0 py-1.5 pr-10 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 {% if msg %}text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500{% endif %}"
+              placeholder="you@example.com" value="bahman@gmail.com" aria-invalid="true" aria-describedby="email-error">
+                {% if msg %}
+                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pr-3">
+                  <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z"
+                      clip-rule="evenodd" />
+                  </svg>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="flex justify-end mt-4 ">
+      <button type="submit" class="bg-green-600 hover:bg-green-500 shadow-md shadow-slate-600 p-2 py-1 rounded-md mx-2">ورود</button>
+      <button type="submit" class="bg-red-600 hover:bg-red-500 shadow-md shadow-slate-600 p-2 py-1 rounded-md mr-2">خالی کردن فرم</button>
+    </div>
+    <div class="flex justify-start mt-4 ">
+      <a href="/forgetPassword/" class="bg-emerald-600 hover:bg-green-500 shadow-md shadow-slate-600 p-2 py-1 rounded-md mx-2">فراموشی رمز عبور</a>
+      <a href="/sinup/" class="bg-amber-700 hover:bg-red-500 shadow-md shadow-slate-600 p-2 py-1 rounded-md mr-2">ثبت نام</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

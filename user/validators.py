@@ -1,13 +1,14 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from string import ascii_letters
+my_chars = ascii_letters + '1234567890'
 
 def username_validator(value):
     len_value = len(value)
     if len_value < 5:
         raise ValidationError(_("نام کاربری باید بیشتر از ۴ کاراکتر باشد"))
     for i in value:
-        if i not in ascii_letters:
+        if i not in my_chars:
             raise ValidationError(_("نام کاربری باید انگلیسی و یا حاوی عدد باشد"))
     if value.isnumeric():
         raise ValidationError(_("نام کاربری نمیتواند فقط عدد باشد"))

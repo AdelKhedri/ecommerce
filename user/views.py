@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from django.contrib.auth import authenticate, login
-from .forms import UserSinupForm, ProfileForm
+from django.contrib.auth import authenticate, login, logout
+from .forms import UserSinupForm, ProfileForm, ForgetPasswordForm
 from .models import User, EmailConfirm
 from django.core.mail import send_mail
 from datetime import datetime, timedelta
@@ -20,6 +20,11 @@ def send_email(email, code, your_request_type, email_send_type):
     response = send_mail(subject, message, from_email, recipient_list)
     return response
 
+
+def logout_view(request):
+    if request.user:
+        logout(request)
+    return redirect('login')
 
 
 class LoginView(View):
@@ -93,3 +98,67 @@ class ActiveAccountView(View):
             return redirect('profile')
         except:
             return redirect('home')
+
+
+class ForegetPasswordView(View):
+    template_name = 'auth/forget_password.html'
+    
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, {})
+    
+    def post(self, request, *args, **kwargs):
+        email = request.POST.get('email', None)
+        if email:
+            user = User.objects.filter(email=email, is_active=True)
+            if user.exists():
+                otp = EmailConfirm.objects.filter(email=email, otp_type='F')
+                if otp.exists():
+                    otp_expire = otp.filter(expire__gte=datetime.now(tz.UTC))
+                    if otp_expire.exists():
+                        left_time = datetime.strptime(str(otp.first().expire - datetime.now(tz.UTC))[:7], '%H:%M:%S')
+                        msg = left_time
+                    else:
+                        otp.delete()
+                        otp = EmailConfirm.objects.create(email=email, otp_type='F', expire=datetime.now(tz.UTC) + timedelta(minutes=5))
+                        send_email(email, otp.code, 'فراموشی رمز عبور', 'forget_password')
+                        msg = 'email sended'
+                else:
+                    otp.delete()
+                    otp = EmailConfirm.objects.create(email=email, otp_type='F', expire=datetime.now(tz.UTC) + timedelta(minutes=5))
+                    send_email(email, otp.code, 'فراموشی رمز عبور', 'forget_password')
+                    msg = 'email sended'
+            else:
+                msg = 'email not found'
+        else:
+            msg = 'not valid'
+        context = {'msg': msg}
+        return render(request, self.template_name, context)
+
+
+class ConfirmForgetPasswordView(View):
+    template_name = 'auth/forget_password.html'
+
+    def get(self, request, email, code, *args, **kwargs):
+        try:
+            EmailConfirm.objects.get(email=email, code=code, expire__gte=datetime.now(tz.UTC))
+            context = {'forgetPasswordForm': ForgetPasswordForm()}
+        except:
+            return redirect('home')
+        return render(request, self.template_name, context)
+    
+    def post(self, request, email, code, *args, **kwargs):
+        forgetPasswordForm  = ForgetPasswordForm(request.POST)
+        if forgetPasswordForm.is_valid():
+            try:
+                otp = EmailConfirm.objects.get(email=email, code=code, expire__gte=datetime.now(tz.UTC))
+                otp.delete()
+                user = User.objects.get(email=email)
+                user.set_password(forgetPasswordForm.cleaned_data['password'])
+                user.save()
+                login(request, user)
+                return redirect('profile')
+            except:
+                return redirect('home')
+        else:
+            return render(request, self.template_name, {'forgetPasswordForm': forgetPasswordForm})
+        

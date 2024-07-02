@@ -106,3 +106,14 @@ class ProfileForm(forms.ModelForm):
             if self[field].errors:
                 field_name = self.fields[field].widget.attrs
                 field_name.update({'class': f'{field_name} {error_attrs}'})
+
+
+class ForgetPasswordForm(forms.Form):
+    password = forms.CharField(max_length=150, widget=forms.PasswordInput(attrs=default_attrs))
+    password2 = forms.CharField(max_length=150, widget=forms.PasswordInput(attrs=default_attrs))
+
+    def clean(self):
+        data = super().clean()
+        if data['password'] != data['password2']:
+            raise ValidationError(_('پسورد ها با هم مطابقت ندارند'))
+        return data

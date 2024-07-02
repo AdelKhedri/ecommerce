@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.models import Group, Permission
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from .models import User, Profile
-from .validators import phone_number_validator
+from .validators import phone_number_validator, clean_password
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
@@ -116,4 +116,36 @@ class ForgetPasswordForm(forms.Form):
         data = super().clean()
         if data['password'] != data['password2']:
             raise ValidationError(_('پسورد ها با هم مطابقت ندارند'))
+        return data
+
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['last_name', 'first_name', 'username', 'email', 'gender']
+        widgets = {
+            'last_name' : forms.TextInput(attrs=default_attrs),
+            'first_name' : forms.TextInput(attrs=default_attrs),
+            'username' : forms.TextInput(attrs=default_attrs),
+            'email' : forms.EmailInput(attrs=default_attrs),
+            'gender' : forms.Select(attrs=default_attrs),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            if self[field].errors:
+                field_name = self.fields[field].widget.attrs
+                field_name.update({'class': f'{field_name} {error_attrs}'})
+
+
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(max_length=150, label='رمز قبلی', widget=forms.PasswordInput(attrs=black_input_attrs))
+    new_password1 = forms.CharField(max_length=150, label='رمز جدید', validators=[clean_password], widget=forms.PasswordInput(attrs=black_input_attrs))
+    new_password2 = forms.CharField(max_length=150, label='تکرار رمز جدید', validators=[clean_password], widget=forms.PasswordInput(attrs=black_input_attrs))
+
+    def clean(self):
+        data = super().clean()
+        if data.get('new_password1') != data.get('new_password2'):
+            raise ValidationError(_("پسورد ها باید مشابه هم باشند"))
         return data

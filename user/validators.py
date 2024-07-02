@@ -32,3 +32,13 @@ def phone_number_validator(value):
     elif str_value[0] != '9':
         raise ValidationError(_("شماره تلفن باید با 9 شروع شود"))
     return value
+
+
+def clean_password(value):
+    if value.isnumeric():
+        raise ValidationError(_("پسورد نباید فقط عدد باشد"))
+    if value.isalpha():
+        raise ValidationError(_("پسورد نباید فقط متن باشد"))
+    if len(value)< 7:
+        raise ValidationError(_("پسورد باید بیشتر از 7 حرف باشد"))
+    return value

@@ -1,0 +1,210 @@
+{% extends 'user/base_panel.html' %}
+{% load static %}
+
+{% block title %} ویرایش پروفایل{% endblock %}
+{% block mobile_menu_profile %} bg-indigo-700 text-white{% endblock %}
+{% block desktop_menu_profile %} bg-indigo-700 text-white{% endblock %}
+
+{% block current_address %}
+<li class="flex">
+  <div class="flex items-center">
+    <svg class="h-full w-6 flex-shrink-0 text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none"
+      fill="currentColor" aria-hidden="true">
+      <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+    </svg>
+    <a href="{% url 'profile' %}" class="mr-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+      aria-current="page">پروفایل</a>
+  </div>
+</li>
+{% endblock %}
+
+{% block current_page_btn %}
+<a href="{% url 'profile' %}"
+class="text-purple-700 bg-slate-200 p-2 self-center group flex gap-x-3 rounded-md text-lg font-semibold">
+<svg class="h-6 w-6 shrink-0 text-purple-700" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+  stroke="currentColor" aria-hidden="true">
+  <path stroke-linecap="round" stroke-linejoin="round"
+    d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+</svg>
+پروفایل
+</a>
+{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data" class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-4 my-5">
+  {% csrf_token %}
+  <div class="lg:col-span-2 md:basis-1/2 sm:basis-1 p-3 rounded-lg border-2 shadow-lg">
+    <div class="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-6">
+      <div class="lg:col-span-3 md:col-span-6 sm:col-span-6 col-span-6">
+        <label class="block p-1 pr-0" for="{{ userForm.first_name.id_for_label }}">{{ userForm.first_name.label }}</label>
+        {{ userForm.first_name }}
+      </div>
+      <div class="lg:col-span-3 md:col-span-6 sm:col-span-6 col-span-6">
+        <label class="block p-1 pr-0" for="{{ userForm.last_name.id_for_label }}">{{ userForm.last_name.label }}</label>
+        {{ userForm.last_name }}
+      </div>
+      <div class="lg:col-span-5 md:col-span-6 sm:col-span-6 col-span-6">
+        <label class="block p-1 pr-0" for="{{ profileForm.biography.id_for_label }}">ب{{ userForm.biography.label }}یوگرافی</label>
+        {{ profileForm.biography }}
+      </div>
+      <div class="lg:col-span-3 md:col-span-6 sm:col-span-6 col-span-6">
+                          
+        <div>
+          <label for="{{ userForm.email.id_for_label }}" class="block text-sm font-medium leading-6 text-gray-900">{{ userForm.email.label }}</label>
+          <div class="relative mt-2 rounded-md shadow-sm">
+            {{ userForm.email }}
+            {% if userForm.email.errors %}
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z"
+                  clip-rule="evenodd" />
+              </svg>
+            </div>
+            {% endif %}
+          </div>
+          <p class="mt-2 text-sm text-red-600" id="email-error">
+          {% if userForm.email.errors %}
+            {% for error in userForm.email.errors %}
+              {{ error }}
+            {% endfor %}
+          {% endif %}
+          &nbsp;
+          </p>
+        </div>
+
+        <div>
+          <label for="{{ profileForm.phone_number.id_for_label }}" class="block text-sm font-medium leading-6 text-gray-900">{{ profileForm.phone_number.label }}</label>
+          <div class="relative mt-2 rounded-md shadow-sm">
+            {{ profileForm.phone_number }}
+            {% if profileForm.phone_number.errors %}
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z"
+                  clip-rule="evenodd" />
+              </svg>
+            </div>
+            {% endif %}
+          </div>
+          <p class="mt-2 text-sm text-red-600" id="email-error">
+          {% if profileForm.phone_number.errors %}
+            {% for error in profileForm.phone_number.errors %}
+              {{ error }}
+            {% endfor %}
+          {% endif %}
+            &nbsp;
+          </p>
+        </div>
+      </div>
+      <div class="lg:col-span-3 md:col-span-6 sm:col-span-6 col-span-6">
+        <div>
+          <label for="{{ userForm.username.id_for_label }}" class="block text-sm font-medium leading-6 text-gray-900">{{ userForm.username.label }}</label>
+          <div class="relative mt-2 rounded-md shadow-sm">
+            {{ userForm.username }}
+            {% if userForm.username.errors %}
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z"
+                  clip-rule="evenodd" />
+              </svg>
+            </div>
+            {% endif %}
+          </div>
+          <p class="mt-2 text-sm text-red-600" id="email-error">
+          {% if userForm.username.errors %}
+            {% for error in userForm.username.errors %}
+              {{ error }}
+            {% endfor %}
+          {% endif %}
+          &nbsp;
+          </p>
+        </div>
+
+        <div>
+          <label for="{{ profileForm.birth_day.id_for_label }}" class="block text-sm font-medium leading-6 text-gray-900">{{ profileForm.birth_day.label }}</label>
+          <div class="relative mt-2 rounded-md shadow-sm">
+            {{ profileForm.birth_day }}
+            {% if profileForm.birth_day.errors %}
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z"
+                  clip-rule="evenodd" />
+              </svg>
+            </div>
+            {% endif %}
+          </div>
+          <p class="mt-2 text-sm text-red-600" id="email-error">
+          {% if profileForm.birth_day.errors %}
+            {% for error in profileForm.birth_day.errors %}
+              {{ error }}
+            {% endfor %}
+          {% endif %}
+          &nbsp;
+          </p>
+        </div>
+        
+      </div>
+      <div class="lg:col-span-4 md:col-span-5 sm:col-span-6 ">
+        <label class="block p-1 pr-0" for="{{ profileForm.image.id_for_label }}">{{ profileForm.image.label }}</label>
+        {{ profileForm.image }}
+        <input id="image-clear_id" name="image-clear_id" type="checkbox" class="my-2 mx-1 h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+        <label for="image-clear_id">حذف عکس</label>
+      </div>
+      <div class="col-span-6">
+        <hr>
+        <div class="flex py-2 justify-end">
+          <button
+            class="border-2 border-green-700 p-1 bg-green-500 rounded-md hover:bg-green-700 hover:border-green-900 mr-2"
+            type="submit">ثبت اطلاعات</button>
+          <button
+            class="border-2 border-red-500 bg-orange-500 p-1 rounded-md hover:bg-orange-600 hover:border-red-700 mr-2"
+            type="reset">بازنشانی</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="lg:col-span-1 md:basis-1/2 sm:basis-1 p-2 rounded-lg border-2 shadow-lg">
+    <div class="">
+      <img src="{% if request.user.profile.image %}{{request.user.profile.image.url}}{% else %}{% static 'images/default_profile.png' %}{% endif %}" class="" alt="" srcset="">
+    </div>
+    <div class="p-4">
+      <div class="flex justify-around mt-2">
+        <div class="flex">
+          <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
+            <path
+              d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
+          </svg>
+          <span class="mx-2 font-bold">نام و نام خانوادگی:&nbsp;</span>
+        </div>
+        <span>{{ request.user.get_full_name|default:'بدون نام' }}</span>
+      </div>
+      <div class="flex justify-around mt-2">
+        <div class="flex">
+          <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
+            <path
+              d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
+          </svg>
+          <span class="mx-2 font-bold">ایمیل:&nbsp;</span>
+        </div>
+        <span>{{ request.user.email }}</span>
+      </div>
+      <div class="flex justify-around mt-2">
+        <div class="flex">
+          <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
+            <path
+              d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
+          </svg>
+          <span class="mx-2 font-bold">نام کاربری:&nbsp;</span>
+        </div>
+        <span>{{ request.user.username }}</span>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

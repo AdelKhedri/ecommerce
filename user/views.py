@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserSinupForm, ProfileForm, ForgetPasswordForm
+from .forms import UserSinupForm, ProfileForm, ForgetPasswordForm, UserUpdateForm, ChangePasswordForm
 from .models import User, EmailConfirm
 from django.core.mail import send_mail
 from datetime import datetime, timedelta
 from dateutil import tz
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def send_email(email, code, your_request_type, email_send_type):
@@ -88,8 +89,6 @@ class SinupView(View):
 
 
 class ActiveAccountView(View):
-    template_name = 'auth/active_account.html'
-
     def get(self, request, email, code, *args, **kwargs):
         try:
             otp = EmailConfirm.objects.get(email=email, code=code, otp_type='S', expire__gte=datetime.now(tz.UTC))
@@ -162,3 +161,70 @@ class ConfirmForgetPasswordView(View):
         else:
             return render(request, self.template_name, {'forgetPasswordForm': forgetPasswordForm})
         
+class ProfileView(LoginRequiredMixin, View):
+    template_name = 'user/user-panel.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {
+            'profileForm': ProfileForm(instance=request.user.profile),
+            'userForm': UserUpdateForm(instance=request.user),
+            }
+        return render(request, self.template_name, context)
+    
+    def post(self, request, *args, **kwargs):
+        context = {
+            'profileForm': ProfileForm(instance=request.user.profile),
+            'userForm': UserUpdateForm(instance=request.user),
+            }
+        profileInstance = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        userInstance = UserUpdateForm(request.POST, instance=request.user)
+        
+        if request.POST.get('image-clear_id', 'off') == 'on':
+            request.user.profile.image = ''
+            request.user.profile.save()
+        
+        if profileInstance.has_changed():
+            if profileInstance.is_valid():
+                profile = profileInstance.save(commit=False)
+                profile.save()
+                context.update({'profileForm_msg': 'success'})
+            else:
+                context.update({'profileForm_msg': 'not valid'})
+            context.update({'profileForm': profileInstance})
+        
+        if userInstance.has_changed():
+            if userInstance.is_valid():
+                userInstance.save()
+                context.update({'userForm_msg': 'success'})
+            else:
+                context.update({'userForm_msg': 'not valid'})
+            context.update({'userForm': userInstance})
+        
+        return render(request, self.template_name, context)
+
+
+class ChangePasswordView(LoginRequiredMixin, View):
+    template_name = 'user/change_password.html'
+
+    def get(self, request, *arg, **kwargs):
+        context = {
+            'changePasswordForm': ChangePasswordForm()
+        }
+        return render(request, self.template_name, context)
+    
+    def post(self, request, *arg, **kwargs):
+        changePasswordInstance = ChangePasswordForm(request.POST)
+        context = {
+            'changePasswordForm': changePasswordInstance
+        }
+        if changePasswordInstance.is_valid():
+            user = authenticate(request, email=request.user.email, password=changePasswordInstance.cleaned_data['old_password'])
+            if user is not None:
+                user = request.user
+                user.set_password(changePasswordInstance.cleaned_data['new_password1'])
+                user.save()
+                logout(request)
+                return redirect('login')
+            else:
+                context.update({'changePasswordForm_msg': 'old_passwod error'})
+        return render(request, self.template_name, context)

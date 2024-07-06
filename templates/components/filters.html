@@ -1,0 +1,235 @@
+<div class="overflow-y-auto max-h-[65vh]">
+    
+    <h3 class="p-3 text-indigo-900">فیلتر</h3>
+
+    <div class="relative">
+      <div id="filter-section relative" class="blur-sm">
+        <div class="border-b border-gray-200 py-3">
+          <h3 class="-my-3 flow-root">
+            <!-- Expand/collapse section button -->
+            <button onclick="ToggleHiddenArea('status-filter-windows');ToggleHiddenArea('status-filter-icon-plus');ToggleHiddenArea('status-filter-icon-negative')" type="button"
+              class="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500"
+              aria-controls="filter-section-0" aria-expanded="false">
+              <span class="font-medium text-gray-900">وضعیت موجودی</span>
+              <span class="ml-6 flex items-center">
+                <!-- Expand icon, show/hide based on section open state. -->
+                <svg class="h-5 w-5 hidden" id="status-filter-icon-plus" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path
+                    d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                </svg>
+                <!-- Collapse icon, show/hide based on section open state. -->
+                <svg class="h-5 w-5" id="status-filter-icon-negative" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z"
+                    clip-rule="evenodd" />
+                </svg>
+              </span>
+            </button>
+          </h3>
+          <!-- Filter section, show/hide based on section state. -->
+          <div class="pt-6" id="status-filter-windows">
+            <div class="space-y-4">
+              <div class="flex items-center">
+                <input id="filter-color-0" name="color[]" value="white" type="checkbox"
+                  class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                <label for="filter-color-0" class="mr-3 text-sm text-gray-600">کالا  های دردسترس</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="border-b border-gray-200 py-3">
+          <h3 class="-my-3 flow-root">
+            <!-- Expand/collapse section button -->
+            <button onclick="ToggleHiddenArea('price-filter-windows');ToggleHiddenArea('price-filter-icon-plus');ToggleHiddenArea('price-filter-icon-negative')" type="button"
+              class="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500"
+              aria-controls="filter-section-1" aria-expanded="false">
+              <span class="font-medium text-gray-900">بازه قیمتی</span>
+              <span class="ml-6 flex items-center">
+                <!-- Expand icon, show/hide based on section open state. -->
+                <svg class="h-5 w-5" id="price-filter-icon-plus" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path
+                    d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                </svg>
+                <!-- Collapse icon, show/hide based on section open state. -->
+                <svg class="h-5 w-5 hidden" id="price-filter-icon-negative" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z"
+                    clip-rule="evenodd" />
+                </svg>
+              </span>
+            </button>
+          </h3>
+          <!-- Filter section, show/hide based on section state. -->
+          <div class="pt-6 hidden" id="price-filter-windows">
+            <div class="space-y-4">
+              <div class="flex items-center">
+                <hr>
+                <div class="w-full mb-6">
+                  <div class="flex">
+                    <label for="filter-category-0" class="mr-3 text-sm text-gray-600">بیشتر از</label>
+                    <input type="text" name="maxPrice" class="mr-3 rounded-md border border-gray-300" value="1000" oninput="this.form.maxPriceRange.value=this.value" id="">
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-sm text-gray-500 dark:text-gray-400">1,000T</span>
+                    <span class="text-sm text-gray-500 dark:text-gray-400">300,000,000T</span>
+                  </div>
+                  <input id="labels-range-input" type="range" name="maxPriceRange" oninput="this.form.maxPrice.value=this.value" value="1000" min="1000" step="1000" max="300000000" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+                </div>
+              </div>
+              <div class="flex items-center">
+              </div>
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-center">
+                <hr>
+                <div class="w-full mb-6">
+                  <div class="flex">
+                    <label for="filter-category-0" class="mr-3 text-sm text-gray-600">کمتر از</label>
+                    <input type="text" name="minPrice" class="mr-3 rounded-md border border-gray-300" value="1000" oninput="this.form.minPriceRange.value=this.value" id="">
+                  </div>
+                    <div class="flex justify-between">
+                    <span class="text-sm text-gray-500 dark:text-gray-400">1,000T</span>
+                    <span class="text-sm text-gray-500 dark:text-gray-400">300,000,000T</span>
+                  </div>
+                  <input id="labels-range-input" type="range" name="minPriceRange" oninput="this.form.minPrice.value=this.value" value="1000" min="1000" step="1000" max="300000000" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+                </div>
+              </div>
+              <div class="flex items-center">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="border-b border-gray-200 py-3">
+          <h3 class="-my-3 flow-root">
+            <!-- Expand/collapse section button -->
+            <button onclick="ToggleHiddenArea('time-filter-windows');ToggleHiddenArea('time-filter-icon-negative');ToggleHiddenArea('description-filter-icon-plus')" type="button"
+              class="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500"
+              aria-controls="filter-section-2" aria-expanded="false">
+              <span class="font-medium text-gray-900">فیلتر بر اساس زمان آگهی</span>
+              <span class="ml-6 flex items-center">
+                <!-- Expand icon, show/hide based on section open state. -->
+                <svg class="h-5 w-5" id="time-filter-icon-plus" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path
+                    d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                </svg>
+                <!-- Collapse icon, show/hide based on section open state. -->
+                <svg class="h-5 w-5 hidden" id="time-filter-icon-negative" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z"
+                    clip-rule="evenodd" />
+                </svg>
+              </span>
+            </button>
+          </h3>
+          <!-- Filter section, show/hide based on section state. -->
+          <div class="pt-6 hidden" id="time-filter-windows">
+            <div class="space-y-4">
+              <div class="flex items-center">
+                <input id="filter-size-0" name="size[]" value="2l" type="checkbox"
+                  class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                <label for="filter-size-0" class="mr-3 text-sm text-gray-600">از چه تاریخی؟</label>
+              </div>
+              <div class="flex items-center">
+                <input id="filter-size-5" name="size[]" value="40l" type="checkbox" checked
+                  class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                <label for="filter-size-5" class="mr-3 text-sm text-gray-600">تا چه تاریخی؟</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="border-b border-gray-200 py-3">
+          <h3 class="-my-3 flow-root">
+            <!-- Expand/collapse section button -->
+            <button onclick="ToggleHiddenArea('name-filter-windows');ToggleHiddenArea('name-filter-icon-negative');ToggleHiddenArea('description-filter-icon-plus')" type="button"
+              class="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500"
+              aria-controls="filter-section-2" aria-expanded="false">
+              <span class="font-medium text-gray-900">جستوجو در نام محصول</span>
+              <span class="ml-6 flex items-center">
+                <!-- Expand icon, show/hide based on section open state. -->
+                <svg class="h-5 w-5" id="name-filter-icon-plus" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path
+                    d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                </svg>
+                <!-- Collapse icon, show/hide based on section open state. -->
+                <svg class="h-5 w-5 hidden" id="name-filter-icon-negative" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z"
+                    clip-rule="evenodd" />
+                </svg>
+              </span>
+            </button>
+          </h3>
+          <!-- Filter section, show/hide based on section state. -->
+          <div class="pt-6 hidden" id="name-filter-windows">
+            <div class="space-y-4">
+              <div class="flex items-center">
+                <input id="filter-size-0" name="size[]" value="2l" type="checkbox"
+                  class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                <label for="filter-size-0" class="mr-3 text-sm text-gray-600">با چه کلمه ای شروع شود؟</label>
+              </div>
+              <div class="flex items-center">
+                <input id="filter-size-5" name="size[]" value="40l" type="checkbox" checked
+                  class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                <label for="filter-size-5" class="mr-3 text-sm text-gray-600">حاوی چه کلمه ای باشد؟</label>
+              </div>
+              <div class="flex items-center">
+                <input id="filter-size-5" name="size[]" value="40l" type="checkbox" checked
+                  class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                <label for="filter-size-5" class="mr-3 text-sm text-gray-600">با چه کلمه ای تمام شود؟</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-b border-gray-200 py-3">
+          <h3 class="-my-3 flow-root">
+            <!-- Expand/collapse section button -->
+            <button onclick="ToggleHiddenArea('description-filter-windows');ToggleHiddenArea('description-filter-icon-negative');ToggleHiddenArea('description-filter-icon-plus')" type="button"
+              class="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500"
+              aria-controls="filter-section-2" aria-expanded="false">
+              <span class="font-medium text-gray-900">جستوجو در درباره محصول</span>
+              <span class="ml-6 flex items-center">
+                <!-- Expand icon, show/hide based on section open state. -->
+                <svg class="h-5 w-5" id="description-filter-icon-plus" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path
+                    d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                </svg>
+                <!-- Collapse icon, show/hide based on section open state. -->
+                <svg class="h-5 w-5 hidden" id="description-filter-icon-negative" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z"
+                    clip-rule="evenodd" />
+                </svg>
+              </span>
+            </button>
+          </h3>
+          <!-- Filter section, show/hide based on section state. -->
+          <div class="pt-6 hidden" id="description-filter-windows">
+            <div class="space-y-4">
+              <div class="flex items-center">
+                <input id="filter-size-0" name="size[]" value="2l" type="checkbox"
+                  class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                <label for="filter-size-0" class="mr-3 text-sm text-gray-600">با چه کلمه ای شروع شود؟</label>
+              </div>
+              <div class="flex items-center">
+                <input id="filter-size-5" name="size[]" value="40l" type="checkbox" checked
+                  class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                <label for="filter-size-5" class="mr-3 text-sm text-gray-600">حاوی چه کلمه ای باشد؟</label>
+              </div>
+              <div class="flex items-center">
+                <input id="filter-size-5" name="size[]" value="40l" type="checkbox" checked
+                  class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                <label for="filter-size-5" class="mr-3 text-sm text-gray-600">با چه کلمه ای تمام شود؟</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="absolute bottom-[45%] bg-yellow-400 text-red-700 font-bold border-red-600 border-2 p-1 rounded-md">این بخش بزودی اظافه میشود</p>
+    </div>
+  </div>
+  <div class="border-t border-gray-200 mt-2">
+    <button type="submit"
+      class="mt-2 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">فیلتر
+      کردن</button>
+  </div>

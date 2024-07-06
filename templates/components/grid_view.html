@@ -1,0 +1,44 @@
+{% load humanize %}
+<div class="grid grid-cols-1 gap-x-5 gap-y-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-4 mb-3">
+    {% for product in products_list %}
+    <a href="{% url detail_url product.id %}" class="group rounded-lg bg-white p-2">
+        <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+            <img src="{{ product.image.url|default:'test'}}" alt="Tall slender porcelain bottle with natural clay textured body and cork stopper." class="h-full w-full object-cover object-center group-hover:opacity-75">
+        </div>
+        <h3 class="mt-4 text-sm text-gray-700">{{ product.name|truncatechars:50 }}</h3>
+        <p class="mt-1 text-lg font-medium text-gray-900">{{ product.price|intcomma }} هزارتومان</p>
+    </a>
+    {% endfor %}
+</div>
+
+<script>
+
+    function getParaneterByName(name){
+        const url = new URL(window.location.href);
+        return url.searchParams.get(name);
+        }
+
+        function setOrder(order){
+        const current_page = getParaneterByName("page") | null;
+        const url = new URL(window.location.href);
+        if (current_page) {
+            url.searchParams.set("page", current_page);
+        }
+        if (order == "") {
+            url.searchParams.delete("order")
+        } else {
+            url.searchParams.set("order", order);
+        }
+        window.location.href = url.toString();
+        }
+
+        function goToPage(page){
+        const current_order = getParaneterByName("order");
+        const url = new URL(window.location.href)
+        if (current_order) {
+            url.searchParams.set("order", current_order);
+        }
+        url.searchParams.set("page", page)
+        window.location.href = url.toString();
+        }
+</script>

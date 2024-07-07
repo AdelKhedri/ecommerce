@@ -78,7 +78,7 @@ class ProductSpecificationValueRegistration(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryRegistration(admin.ModelAdmin):
     list_display = ["name", "available"]
-    list_display_links = ["available"]
+    list_display_links = ["name", "available"]
     search_fields = ("name", "description", "available")
     list_filter = ["available"]
 

@@ -1,0 +1,67 @@
+<div class="hidden relative z-10" id="shop-cart-menu" aria-labelledby="slide-over-title" role="dialog"
+aria-modal="true">
+<!-- Background backdrop, show/hide based on slide-over state. -->
+<div class="fixed inset-0"></div>
+
+<div class="fixed inset-0 overflow-hidden">
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
+      <div class="relative z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+        <!-- Background backdrop, show/hide based on slide-over state. -->
+        <div class="fixed inset-0"></div>
+
+        <div class="fixed inset-0 overflow-hidden">
+          <div class="absolute inset-0 overflow-hidden">
+            <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+              <div class="pointer-events-auto w-screen max-w-md">
+                <div class="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl">
+                  <div class="flex min-h-0 flex-1 flex-col overflow-y-scroll py-6">
+                    <div class="px-4 sm:px-6">
+                      <div class="flex items-start justify-between">
+                        <h2 class="text-base font-semibold leading-6 text-gray-900" id="slide-over-title">سبد خرید</h2>
+                        <div class="ml-3 flex h-7 items-center">
+                          <button type="button" onclick="ToggleHiddenArea('shop-cart-menu')"
+                            class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <span class="sr-only">Close panel</span>
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                              stroke="currentColor" aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="relative mt-6 flex-1 px-4 sm:px-6">
+                      <!-- Your content -->
+                       {% for object in cart_info.products_list %}
+                       <div class="border-2 p-2 rounded-md hover:bg-gray-200 mb-2">
+                        <div class="flex justify-between">
+                          <img width="70px" class="rounded-md border-fuchsia-500 border-2" src="{{ object.get_image }}" alt="" srcset="">
+                          <p class="self-center p-2">{{ object.name|truncatewords:10 }}</p>
+                          <a href="{% url 'shop:update cart' %}?product={{ object.id }}&next={% url 'shop:product-detail' product.id %}" class=" self-center p-2 rounded-md" >
+                            <svg fill="#e01b24" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve" transform="matrix(1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M227.5,0C101.761,0,0,101.75,0,227.5C0,353.239,101.75,455,227.5,455C353.239,455,455,353.25,455,227.5 C455.001,101.761,353.251,0,227.5,0z M310.759,268.333c11.715,11.716,11.715,30.711,0,42.427 c-5.858,5.858-13.536,8.787-21.213,8.787s-15.355-2.929-21.213-8.787L227.5,269.927l-40.832,40.832 c-5.858,5.858-13.536,8.787-21.213,8.787s-15.355-2.929-21.213-8.787c-11.715-11.716-11.715-30.711,0-42.427l40.832-40.832 l-40.832-40.832c-11.715-11.716-11.715-30.711,0-42.427c11.716-11.716,30.711-11.716,42.427,0l40.832,40.832l40.832-40.832 c11.716-11.716,30.711-11.716,42.427,0c11.715,11.716,11.715,30.711,0,42.427L269.927,227.5L310.759,268.333z"></path> </g> </g> </g></svg>
+                          </a>
+                        </div>
+                      </div>
+                      {% endfor %}
+                      <hr>
+                      <p>کل قیمت <span>{{ cart_info.total_price }}</span></p>
+                    </div>
+                  </div>
+                  <div class="flex flex-shrink-0 justify-end px-4 py-4">
+                    <button type="button"
+                      class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:ring-gray-400">Cancel</button>
+                    <button type="submit"
+                      class="ml-4 inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>

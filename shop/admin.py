@@ -26,7 +26,7 @@ class ProductRegisteration(admin.ModelAdmin):
         (
             "مشخصات کالا",
             {
-                "fields": [("name", "slug", "available"), ("category" ,"product_type"), ( "price", "quantity"), "description", "image"]
+                "fields": [("name", "slug", "available"), ("category" ,"product_type"), ( "price", "quantity"), "description", "related_products", "image"]
             }
         )
     ]

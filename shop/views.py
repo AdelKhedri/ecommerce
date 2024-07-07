@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import View
 from .models import Product
 from django.core.paginator import Paginator
@@ -37,3 +37,21 @@ class HomeView(View):
 
     def post(self, request, *args, **kwargs):
         return render(request, self.template_name, {})
+
+
+class ProductDetailView(View):
+    template_name = 'ecommerce/product_detail.html'
+
+    def get(self, request, pk, *args, **kwargs):
+        product = get_object_or_404(Product, pk=pk)
+        context = {
+            "product": product,
+        }
+        return render(request, self.template_name, context)
+
+    def get(self, request, pk, *args, **kwargs):
+        product = get_object_or_404(Product, pk=pk)
+        context = {
+            "product": product,
+        }
+        return render(request, self.template_name, context)

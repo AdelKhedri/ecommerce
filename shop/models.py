@@ -52,12 +52,16 @@ class Product(models.Model):
     quantity = models.IntegerField(verbose_name="تعداد موجودی")
     created = models.DateTimeField(auto_now_add=True, verbose_name="زمان ساخت")
     available = models.BooleanField(default=True, verbose_name="در دسترس")
+    related_products = models.ManyToManyField("self", blank=True, verbose_name="محصولات مرتبط")
 
     class Meta:
         verbose_name = "محصول"
         verbose_name_plural = "محصولات"
         ordering = ['created',]
 
+    def get_image(self):
+        return self.image.url if self.image else "/static/images/default_product_image.png" # search for 'no image'
+    
     def is_available(self):
         return True if self.available and self.quantity >= 1 else False
     
@@ -78,7 +82,7 @@ class Product(models.Model):
 
 
 class ProductSpecificationValue(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name="specification", on_delete=models.CASCADE)
     specification = models.ForeignKey(ProductSpecification, on_delete=models.RESTRICT, verbose_name="ویژگی")
     value = models.TextField(max_length=500, verbose_name="مقدار")
 

@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
-from .models import Product
+from .models import Product, Category
 from django.core.paginator import Paginator
 from .Cart import Cart
 from django.db.models import F
@@ -33,7 +33,9 @@ class HomeView(View):
         context = {
             "products_list": page,
             "total_pages": paginator.num_pages,
-            "total_products": paginator.count
+            "total_products": paginator.count,
+            'title_page': 'لیست محصولات ',
+            'title': 'لیست همه محصولات ',
             }
         return render(request, self.template_name, context)
 
@@ -74,3 +76,25 @@ class UpdateCartView(View):
             return redirect(next)
         else:
             return redirect("profile")
+
+
+class CategoryView(View):
+    template_name = "ecommerce/home.html"
+
+    def get(self, request, slug, *args, **kwargs):
+        category = get_object_or_404(Category, available=True, slug=slug)
+        products_list = Product.objects.filter(category=category)
+        paginator = Paginator(products_list, 20)
+        current_page = request.GET.get("page", 1)
+        page = paginator.get_page(current_page)
+        context = {
+            'products_list': page,
+            'total_pages': paginator.num_pages,
+            'total_products': paginator.count,
+            'title_page': category.name,
+            'title': f'لیست محصولات دسته بندی: {category.name}',
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, slug, *args, **kwargs):
+        return render(request, self.template_name, {})

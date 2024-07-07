@@ -1,7 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
 from .models import Product
 from django.core.paginator import Paginator
+from .Cart import Cart
+from django.db.models import F
 
 
 class HomeView(View):
@@ -42,16 +44,33 @@ class HomeView(View):
 class ProductDetailView(View):
     template_name = 'ecommerce/product_detail.html'
 
-    def get(self, request, pk, *args, **kwargs):
-        product = get_object_or_404(Product, pk=pk)
-        context = {
+    def setup(self, request, pk, *args, **kwargs):
+        product = get_object_or_404(Product, id=pk, available=True, quantity__gte=1)
+        cart = Cart(request)
+        self.context = {
             "product": product,
+            "product_id_cart": cart.check_product_in_cart(product.id),
+            "cart_info": cart.cart_info(),
         }
-        return render(request, self.template_name, context)
+        return super().setup(request, pk, *args, **kwargs)
+    
+    def get(self, request, pk, *args, **kwargs):
+        return render(request, self.template_name, self.context)
 
-    def get(self, request, pk, *args, **kwargs):
-        product = get_object_or_404(Product, pk=pk)
-        context = {
-            "product": product,
-        }
-        return render(request, self.template_name, context)
+    def post(self, request, pk, *args, **kwargs):
+        return render(request, self.template_name, self.context)
+
+
+class UpdateCartView(View):
+    def get(self, request, *args, **kwargs):
+        cart = Cart(request)
+        product_id = request.GET.get("product", None)
+        product = get_object_or_404(Product, id=product_id, available=True, quantity__gte=1)
+        product.quantity = F("quantity") - 1
+        product.save()
+        cart.add_or_remove(product)
+        next = request.GET.get("next", None)
+        if next:
+            return redirect(next)
+        else:
+            return redirect("profile")

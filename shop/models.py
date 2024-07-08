@@ -7,7 +7,7 @@ class Category(models.Model):
     description = models.CharField(max_length=500, blank=True, verbose_name="درباره")
     slug = models.SlugField(max_length=200, unique=True, verbose_name="آدرس")
     available = models.BooleanField(default=True, verbose_name="دردست رس")
-    parent = models.ForeignKey("self", null=True, blank=True, on_delete=models.CASCADE, verbose_name="دسته بندی")
+    parent = models.ForeignKey("self", null=True, blank=True, on_delete=models.CASCADE, related_name="child", verbose_name="دسته بندی")
 
     class Meta:
         verbose_name = "دسته بندی"

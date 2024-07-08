@@ -1,0 +1,26 @@
+{% extends 'ecommerce/base_site.html' %}
+{% block title %}دسته بندی{% endblock %}
+{% block content %}
+<div class="mx-auto p-4">
+    <ul>
+        {% for category in categorys_list %}
+            {% if category.parent == None %}
+            <div class="my-2">
+                <div style="display: inline-flex;">
+                    <a href="/shop/category/{{ category.slug }}/" style="color: blue;">{{ category.name }}</a>
+                    {% if category.child.all %}
+                </div>
+                <div id="sub-{{category.id}}">
+                        {% include 'components/submenu.html' %}
+                    {% else %}
+                </div>
+                <div >
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            <hr>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

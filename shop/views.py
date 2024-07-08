@@ -98,3 +98,14 @@ class CategoryView(View):
 
     def post(self, request, slug, *args, **kwargs):
         return render(request, self.template_name, {})
+
+
+class CategorysListView(View):
+    template_name = "ecommerce/categorys.html"
+
+    def get(self, request, *args, **kwargs):
+        categorys = Category.objects.filter(available=True)
+        context = {
+            'categorys_list': categorys
+        }
+        return render(request, self.template_name, context)

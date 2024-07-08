@@ -132,12 +132,15 @@
               <!-- Your content -->
               <div class="bg-slate-200">
                 <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-8 lg:max-w-7xl lg:px-8">
-                  
+                  {% if total_products > 0 %}
                   <!-- Products -->
                   {% include 'components/grid_view.html' with objects=prducts_list detail_url='shop:product-detail' %}
 
                   <!-- Pagination -->
                   {% include 'components/pagination.html' with objects_list=products_list total_objects=total_products total_pages=total_pages %}
+                  {% else %}
+                    <p class="bg-yellow-400 p-4 rounded-md">این دسته بندی دارای محصول نیست</p>
+                  {% endif %}
                 </div>
               </div>
 

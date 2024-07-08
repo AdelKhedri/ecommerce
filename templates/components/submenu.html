@@ -1,0 +1,10 @@
+<ul>
+    {% for category in category.child.all %}
+        <li style="margin-right: 2rem;"ee>
+            <a style="color: blue;" href="/shop/category/{{ category.slug }}/">{{ category.name }}</a>
+            {% if category.child.all %}
+                    {% include 'components/submenu.html' %}
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

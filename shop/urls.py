@@ -8,4 +8,5 @@ urlpatterns = [
     re_path('^update-cart', views.UpdateCartView.as_view(), name="update cart"),
     # path('categorys', views.CategoryView.as_view(), name="categorys"),
     re_path(r'^category/(?P<slug>[-\w]+)/$', views.CategoryView.as_view(), name="category view"),
+    re_path('^categorys/', views.CategorysListView.as_view(), name="categorys list"),
 ]

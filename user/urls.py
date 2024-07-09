@@ -12,6 +12,7 @@ urlpatterns = [
     path('logout', views.logout_view, name='logout'),
     path('user/profile/', views.ProfileView.as_view(),name="profile"),
     path('user/changePassword/', views.ChangePasswordView.as_view(),name="change password"),
+    path('user/cart/', views.CartView.as_view(), name="cart view"),
 ]
 
 if settings.DEBUG:

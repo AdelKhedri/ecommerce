@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout
 from .forms import UserSinupForm, ProfileForm, ForgetPasswordForm, UserUpdateForm, ChangePasswordForm
@@ -7,6 +8,7 @@ from django.core.mail import send_mail
 from datetime import datetime, timedelta
 from dateutil import tz
 from django.contrib.auth.mixins import LoginRequiredMixin
+from shop.Cart import Cart
 
 
 def send_email(email, code, your_request_type, email_send_type):
@@ -227,4 +229,18 @@ class ChangePasswordView(LoginRequiredMixin, View):
                 return redirect('login')
             else:
                 context.update({'changePasswordForm_msg': 'old_passwod error'})
+        return render(request, self.template_name, context)
+
+
+class CartView(View):
+    template_name = "user/cart.html"
+
+    def get(self, request, *args, **kwargs):
+        cart = Cart(request)
+        next_url = reverse("cart view")
+        print(next_url)
+        context = {
+            "cart_info": cart.cart_info(),
+            "nexturl": next_url
+        }
         return render(request, self.template_name, context)

@@ -1,0 +1,53 @@
+{% extends 'user/base_panel.html' %}
+{% load static %}
+
+{% block title %}تغییر پسورد{% endblock %}
+{% block mobile_menu_cart %} bg-indigo-700 text-white{% endblock %}
+{% block desktop_menu_cart %} bg-indigo-700 text-white{% endblock %}
+
+{% block current_address %}
+<li class="flex">
+  <div class="flex items-center">
+    <svg class="h-full w-6 flex-shrink-0 text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none"
+      fill="currentColor" aria-hidden="true">
+      <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+    </svg>
+    <a href="{% url 'cart view' %}" class="mr-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+      aria-current="page">سبد خرید</a>
+  </div>
+</li>
+{% endblock %}
+
+{% block current_page_btn %}
+<a href="{% url 'cart view' %}"
+class="text-purple-700 bg-slate-200 p-2 self-center group flex gap-x-3 rounded-md text-lg font-semibold">
+<svg class="h-6 w-6 shrink-0 text-purple-700" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+  stroke="currentColor" aria-hidden="true">
+  <path stroke-linecap="round" stroke-linejoin="round"
+    d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+</svg>
+سبد خرید
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="relative mt-6 flex-1 px-4 sm:px-6">
+  <!-- Your content -->
+   {% for object in cart_info.products_list %}
+   <div class="border-2 p-2 my-2 rounded-md hover:bg-gray-200 mb-2">
+    <div class="flex justify-between">
+      <a href="{% url 'shop:product-detail' object.id %}">
+        <img width="70px" class="rounded-md border-fuchsia-500 border-2" src="{{ object.get_image }}" alt="" srcset="">
+      </a>
+      <p class="self-center p-2">{{ object.name|truncatewords:10 }}</p>
+      <a href="{% url 'shop:update cart' %}?product={{ object.id }}&next={% url 'cart view' %}" class=" self-center p-2 rounded-md" >
+        <svg fill="#e01b24" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve" transform="matrix(1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M227.5,0C101.761,0,0,101.75,0,227.5C0,353.239,101.75,455,227.5,455C353.239,455,455,353.25,455,227.5 C455.001,101.761,353.251,0,227.5,0z M310.759,268.333c11.715,11.716,11.715,30.711,0,42.427 c-5.858,5.858-13.536,8.787-21.213,8.787s-15.355-2.929-21.213-8.787L227.5,269.927l-40.832,40.832 c-5.858,5.858-13.536,8.787-21.213,8.787s-15.355-2.929-21.213-8.787c-11.715-11.716-11.715-30.711,0-42.427l40.832-40.832 l-40.832-40.832c-11.715-11.716-11.715-30.711,0-42.427c11.716-11.716,30.711-11.716,42.427,0l40.832,40.832l40.832-40.832 c11.716-11.716,30.711-11.716,42.427,0c11.715,11.716,11.715,30.711,0,42.427L269.927,227.5L310.759,268.333z"></path> </g> </g> </g></svg>
+      </a>
+    </div>
+  </div>
+  {% endfor %}
+  <hr>
+  <p class="my-2">کل قیمت <span>{{ cart_info.total_price }}</span></p>
+  <a href="#" class="border-2 border-indigo-500 rounded-md bg-indigo-500">تکمیل خرید</a>
+</div>
+{% endblock %}

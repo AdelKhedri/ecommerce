@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, ProductType, ProductSpecification, ProductSpecificationValue
+from .models import Category, Product, ProductType, ProductSpecification, ProductSpecificationValue, DiscountCode, Order
 from django.utils.translation import ngettext
 from django.contrib import messages
 
@@ -90,3 +90,16 @@ class ProductTypeRegistration(admin.ModelAdmin):
     list_display_links = ["name", "available"]
     search_fields = ("name", "available")
     list_filter = ["available"]
+
+
+
+@admin.register(DiscountCode)
+class DiscountCodeRegistration(admin.ModelAdmin):
+    list_display = ["code", "percent", "is_available"]
+    list_filter = ["available"]
+    search_fields = ["code", "percent"]
+
+@admin.register(Order)
+class OrderRegistration(admin.ModelAdmin):
+    list_display = ["user", "price"]
+    search_fields = ["user", "price"]

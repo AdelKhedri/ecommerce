@@ -38,17 +38,17 @@
                 <div class="hidden sm:-my-px sm:mr-6 sm:flex sm:space-x-8">
                   <!-- Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
     
-                  <a href="#"
-                    class="border-indigo-500 text-gray-900 inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium"
+                  <a href="{% url 'profile' %}"
+                    class="text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium"
                     aria-current="page">پروفایل</a>
+                  <a href="{% url 'home' %}" style="margin-left: 0px; margin-right: 32px;"
+                    class="{% block current_page_btn_home %}border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 {% endblock %} inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium">محصولات</a>
+                  <a href="{% url 'shop:categorys list' %}" style="margin-left: 0px; margin-right: 32px;"
+                    class="{% block current_page_btn_category %}border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 {% endblock %} inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium">دسته بندی</a>
                   <a href="#" style="margin-left: 0px; margin-right: 32px;"
-                    class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium">محصولات</a>
-                  <a href="#" style="margin-left: 0px; margin-right: 32px;"
-                    class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium">دسته بندی</a>
-                  <a href="#" style="margin-left: 0px; margin-right: 32px;"
-                    class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium">درباره</a>
+                    class="{% block current_page_btn_about %}border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 {% endblock %} inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium">درباره</a>
                     <a href="#" style="margin-left: 0px; margin-right: 32px;"
-                    class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium">چت اپلیکیشن</a>
+                    class="{% block current_page_btn_chat_app %}border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 {% endblock %} inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium">چت اپلیکیشن</a>
                 </div>
               </div>
               <div class="hidden sm:ml-6 sm:flex sm:items-center">

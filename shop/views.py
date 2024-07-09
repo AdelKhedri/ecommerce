@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
-from .models import Product, Category
+from .models import Product, Category, DiscountCode, Order
 from django.core.paginator import Paginator
 from .Cart import Cart
 from django.db.models import F
+from datetime import datetime
 
 
 class HomeView(View):
@@ -109,3 +110,56 @@ class CategorysListView(View):
             'categorys_list': categorys
         }
         return render(request, self.template_name, context)
+
+
+class CartUnRegisteredUserView(View):
+    """For users that is not registered"""
+    template_name = "ecommerce/cart-checkout.html"
+
+    def setup(self, request, *args, **kwargs):
+        self.cart = Cart(request)
+        self.context = {
+            "cart_info": self.cart.cart_info(),
+        }
+        return super().setup(request, *args, **kwargs)
+
+    def get(self, request, *args, **kawrgs):
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kawrgs):
+        discount_code = request.POST.get('discount_code', None)
+        if discount_code:
+            if not self.cart.cart['discount_code']:
+                try:
+                    discount = DiscountCode.objects.get(code=discount_code, available=True, current_use__lt=F("max_use"))
+                    discount.current_use = F("current_use") + 1
+                    discount.save()
+                    self.cart.set_discount_code(discount.code, discount.percent)
+                    msg = "success"
+                except DiscountCode.DoesNotExist:
+                    msg = "not found"
+            else:
+                msg = "last use"
+            self.context.update({"msg": msg, "cart_info": self.cart.cart_info()})
+        
+        pay = request.POST.get('pay', "off")
+        if pay == "on":
+            cart = self.cart.cart_info()
+            price = cart.get("total_price") - cart.get("discount_price")
+            profile = request.user.profile
+            if profile.coin >= price:
+                profile.coin = F("coin") - price
+                profile.save()
+                self.cart.clear()
+                if request.user.is_authenticated:
+                    order = Order.objects.create(
+                        user=request.user,
+                        price=price
+                    )
+                    order.products.set([p for p in cart["products_list"]])
+                    order.save()
+                    return redirect("history")
+                return redirect("home")
+            else:
+                self.context.update({"payment_msg": "not enough"})
+        return render(request, self.template_name, self.context)

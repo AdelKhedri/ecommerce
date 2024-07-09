@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils.safestring import mark_safe
+from .customFields import IntegerRageField
+from user.models import User
 
 
 class Category(models.Model):
@@ -92,3 +94,35 @@ class ProductSpecificationValue(models.Model):
     
     def __str__(self):
         return self.value
+
+
+class DiscountCode(models.Model):
+    code = models.CharField(max_length=20, unique=True, verbose_name="کد تخفیف")
+    percent = IntegerRageField(verbose_name="درصد تخفیف", min_value=1, max_value=100)
+    max_use = models.IntegerField(default=1, verbose_name="حداکثر تعداد استفاده")
+    current_use = models.IntegerField(default=0, verbose_name="تعداد استفاده شده")
+    expire_time = models.DateTimeField(verbose_name="زمان انقضا")
+    available = models.BooleanField(default=True, verbose_name="در دسترس")
+
+    class Meta:
+        verbose_name = "کد تخفیف"
+        verbose_name_plural = "کدهای تخفیف"
+    
+    def is_available(self):
+        return True if self.available and self.current_use < self.max_use else False
+    
+    is_available.short_description = "در دسترس"
+    is_available.boolean = True
+
+    def __str__(self):
+        return self.code
+
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="کاربر")
+    products = models.ManyToManyField(Product, verbose_name="محصولات")
+    price = models.IntegerField(verbose_name="قیمت")
+    time = models.DateTimeField(auto_now_add=True, verbose_name="زمان خرید")
+
+    def __str__(self):
+        return f"{self.user.first_name}:{self.price}"

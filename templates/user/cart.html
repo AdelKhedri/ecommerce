@@ -48,6 +48,6 @@ class="text-purple-700 bg-slate-200 p-2 self-center group flex gap-x-3 rounded-m
   {% endfor %}
   <hr>
   <p class="my-2">کل قیمت <span>{{ cart_info.total_price }}</span></p>
-  <a href="#" class="border-2 border-indigo-500 rounded-md bg-indigo-500">تکمیل خرید</a>
+  <a href="{% url 'shop:cart for unregistered user' %}" class="border-2 border-indigo-500 rounded-md bg-indigo-500">تکمیل خرید</a>
 </div>
 {% endblock %}

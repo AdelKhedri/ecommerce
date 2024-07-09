@@ -9,4 +9,5 @@ urlpatterns = [
     # path('categorys', views.CategoryView.as_view(), name="categorys"),
     re_path(r'^category/(?P<slug>[-\w]+)/$', views.CategoryView.as_view(), name="category view"),
     re_path('^categorys/', views.CategorysListView.as_view(), name="categorys list"),
+    path('cart/', views.CartUnRegisteredUserView.as_view(), name="cart for unregistered user"),
 ]

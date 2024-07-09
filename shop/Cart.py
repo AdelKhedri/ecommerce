@@ -1,12 +1,17 @@
 from django.conf import settings
-from .models import Product
+from .models import Product, DiscountCode
+
 
 class Cart:
     def __init__(self, request):
         self.session = request.session
         cart = self.session.get(settings.CART_SESSION_ID, None)
         if not cart:
-            cart = self.session[settings.CART_SESSION_ID] = {"total_price": 0}
+            cart = self.session[settings.CART_SESSION_ID] = {
+                "total_price": 0,
+                "discount_price": 0,
+                "discount_code": None,
+                "discount_percent": 0}
         self.cart = cart
 
     def add_or_remove(self, product):
@@ -31,8 +36,19 @@ class Cart:
         cart_info = {
             "products_list": products_list,
             "total_price": self.cart.get('total_price', 0),
+            "discount_price": self.cart['discount_price'],
+            "discount_code": self.cart['discount_code'],
+            "discount_percent": self.cart['discount_percent'],
         }
         return cart_info
+    
+    def set_discount_code(self, discount_code, discount_percent):
+        self.cart['discount_code'] = discount_code
+        print(discount_percent)
+        self.cart['discount_percent'] = discount_percent
+        self.save()
+        self.cart['discount_price'] = self.cart["total_price"] / 100 * self.cart['discount_percent']
+        print(self.cart)
 
     def save(self):
         self.session[settings.CART_SESSION_ID] = self.cart
@@ -40,4 +56,5 @@ class Cart:
     
     def clear(self):
         self.cart.clear()
+        print(self.cart)
         self.save()

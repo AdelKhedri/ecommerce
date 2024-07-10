@@ -28,7 +28,7 @@ class HomeView(View):
         # else:
         products_list = Product.objects.filter(available=True)
         
-        paginator = Paginator(products_list, 5)
+        paginator = Paginator(products_list, 10)
         current_page = request.GET.get('page', 1)
         page = paginator.get_page(current_page)
         context = {

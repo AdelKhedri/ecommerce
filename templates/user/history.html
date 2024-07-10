@@ -1,0 +1,87 @@
+{% extends 'user/base_panel.html' %}
+{% load static %}
+
+{% block title %}تاریخچه خرید{% endblock %}
+{% block mobile_menu_history %} bg-indigo-700 text-white{% endblock %}
+{% block desktop_menu_history %} bg-indigo-700 text-white{% endblock %}
+
+{% block current_address %}
+<li class="flex">
+  <div class="flex items-center">
+    <svg class="h-full w-6 flex-shrink-0 text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none"
+      fill="currentColor" aria-hidden="true">
+      <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+    </svg>
+    <a href="{% url 'cart view' %}" class="mr-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+      aria-current="page">تاریخچه خرید</a>
+  </div>
+</li>
+{% endblock %}
+
+{% block current_page_btn %}
+<a href="{% url 'history buy' %}"
+class="text-purple-700 bg-slate-200 p-2 self-center group flex gap-x-3 rounded-md text-lg font-semibold">
+<svg class="h-6 w-6 shrink-0 text-purple-700" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+  stroke="currentColor" aria-hidden="true">
+  <path stroke-linecap="round" stroke-linejoin="round"
+    d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+</svg>
+تاریخچه خرید
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="relative mt-6 flex-1 px-4 sm:px-6">
+  <div class="bg-white">
+        
+      
+    <main class="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:pb-32 sm:pt-24 lg:px-8">
+      <div class="mt-12 space-y-16 sm:mt-16">
+
+        {% for order in products_list %}
+        {% for product in order.products.all %}
+        <section aria-labelledby="4376-heading">
+          <div class="space-y-1 md:flex md:items-baseline md:space-x-4 md:space-y-0">
+            <h2 id="4376-heading" class="text-lg font-medium text-gray-900 md:flex-shrink-0">سفارش #{{ order.id }}</h2>
+            <div class="space-y-5 sm:flex sm:items-baseline sm:justify-between sm:space-y-0 md:min-w-0 md:flex-1">
+              <p class="text-sm font-medium text-gray-500">قیمت کل {{ order.price }}</p>
+              <div class="flex text-sm font-medium">
+                <a class="text-indigo-600 hover:text-indigo-500">جزیات</a>
+              </div>
+            </div>
+          </div>
+  
+          <div class="-mb-6 mt-6 flow-root divide-y divide-gray-200 border-t border-gray-200">
+            <div class="py-6 sm:flex">
+              <div class="flex space-x-4 sm:min-w-0 sm:flex-1 sm:space-x-6 lg:space-x-8">
+                <img src="{{ product.get_image }}" alt="Brass puzzle in the shape of a jack with overlapping rounded posts." class="h-20 w-20 flex-none rounded-md object-cover object-center sm:h-48 sm:w-48">
+                <div class="min-w-0 flex-1 pt-1.5 sm:pt-0">
+                  <h3 class="text-sm font-medium text-gray-900">
+                    <a href="#">{{ product.name }}</a>
+                  </h3>
+                  <p class="truncate text-sm text-gray-500">
+                  </p>
+                  <p class="mt-1 font-medium text-gray-900">{{ product.price }} تومان</p>
+                </div>
+              </div>
+              <div class="mt-6 space-y-4 sm:ml-6 sm:mt-0 sm:w-40 sm:flex-none">
+                <button type="button" class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-2.5 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-full sm:flex-grow-0">Buy again</button>
+                <button type="button" class="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-2.5 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-full sm:flex-grow-0">Shop similar</button>
+              </div>
+            </div>
+  
+            <!-- More products... -->
+          </div>
+        </section>
+        {% endfor %}
+        {% endfor %}
+
+        {% include 'components/pagination.html' with objects_list=products_list total_objects=total_products total_pages=total_pages %}
+  
+        <!-- More orders... -->
+      </div>
+    </main>
+  
+  </div>
+</div>
+{% endblock %}

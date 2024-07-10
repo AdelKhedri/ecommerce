@@ -9,6 +9,8 @@ from datetime import datetime, timedelta
 from dateutil import tz
 from django.contrib.auth.mixins import LoginRequiredMixin
 from shop.Cart import Cart
+from shop.models import Order
+from django.core.paginator import Paginator
 
 
 def send_email(email, code, your_request_type, email_send_type):
@@ -244,3 +246,23 @@ class CartView(View):
             "nexturl": next_url
         }
         return render(request, self.template_name, context)
+
+
+class HistoryBuyView(View):
+    template_name = "user/history.html"
+
+    def get(self, request, *args, **kwargs):
+        products = Order.objects.filter(user=request.user)
+        paginator = Paginator(products, 4)
+        current_page = request.GET.get("page", 1)
+        page = paginator.get_page(current_page)
+        context = {
+            "products_list": page,
+            "total_products": paginator.count,
+            "total_pages": paginator.num_pages
+            }
+        return render(request, self.template_name, context)
+
+    # def post(self, request, *args, **kwargs):
+    #     context = {}
+    #     return render(request, self.template_name, context)

@@ -85,9 +85,14 @@
             <div class="aspect-h-1 aspect-w-1 w-full">
               <!-- Tab panel, show/hide based on tab state. -->
               <div id="tabs-2-panel-1" aria-labelledby="tabs-2-tab-1" role="tabpanel" tabindex="0">
-                <img src="{{ product.get_image }}"
-                  title="guide: after: Product main image" alt="Angled front view with bag zipped and handles upright."
-                  class="h-full w-full object-cover object-center sm:rounded-lg">
+                <div class="relative">
+                  {% if product_status == "unavailable" %}
+                  <div class="absolute top-16 -right-8 bg-red-600 w-60 h-12 rotate-45">
+                    <p class="text-center mt-2 mb-2">این کالا موجود نیست</p>
+                  </div>
+                  {% endif %}
+                  <img src="{{ product.get_image }}" title="guide: after: Product main image" class="h-full w-full object-cover object-center sm:rounded-lg">
+                </div>
               </div>
             </div>
           </div>
@@ -159,7 +164,7 @@
               </div>
 
               <div class="mt-10 flex">
-                <a href="{% url 'shop:update cart' %}?product={{ product.id }}&next={% url 'shop:product-detail' product.id %}" class="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full {% if not product_id_cart %} bg-indigo-600 hover:bg-indigo-700">افزودن به سبد خرید{% else %}bg-red-600 hover:bg-red-700 ">حذف از سبد خرید{% endif %}</a>
+                <a {% if product_status == 'available' %}href="{% url 'shop:update cart' %}?product={{ product.id }}&next={% url 'shop:product-detail' product.id %}"{% endif %} class="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full {% if not product_id_cart %}{% if product_status == 'available' %} bg-indigo-600 hover:bg-indigo-700">افزودن به سبد خرید{% else %} bg-red-600 hover:bg-red-700"> تموم کردیم{% endif %}{% else %}bg-red-600 hover:bg-red-700 ">حذف از سبد خرید{% endif %}</a>
 
                 <button type="button"
                   class="mr-4 flex items-center justify-center rounded-md px-3 py-3 text-gray-400 hover:bg-gray-100 hover:text-gray-500">

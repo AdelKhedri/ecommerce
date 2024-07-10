@@ -28,7 +28,7 @@ class HomeView(View):
         # else:
         products_list = Product.objects.filter(available=True)
         
-        paginator = Paginator(products_list, 5)
+        paginator = Paginator(products_list, 10)
         current_page = request.GET.get('page', 1)
         page = paginator.get_page(current_page)
         context = {
@@ -48,12 +48,15 @@ class ProductDetailView(View):
     template_name = 'ecommerce/product_detail.html'
 
     def setup(self, request, pk, *args, **kwargs):
-        product = get_object_or_404(Product, id=pk, available=True, quantity__gte=1)
+        product = get_object_or_404(Product, id=pk)
+        msg = "unavailable" if not product.available or product.quantity < 1 else "available"
+        print(msg)
         cart = Cart(request)
         self.context = {
             "product": product,
             "product_id_cart": cart.check_product_in_cart(product.id),
             "cart_info": cart.cart_info(),
+            "product_status": msg,
         }
         return super().setup(request, pk, *args, **kwargs)
     

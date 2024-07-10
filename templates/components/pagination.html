@@ -61,3 +61,34 @@
       </div>
     </div>
   </div>
+  <script>
+
+    function getParaneterByName(name){
+        const url = new URL(window.location.href);
+        return url.searchParams.get(name);
+        }
+
+        function setOrder(order){
+        const current_page = getParaneterByName("page") | null;
+        const url = new URL(window.location.href);
+        if (current_page) {
+            url.searchParams.set("page", current_page);
+        }
+        if (order == "") {
+            url.searchParams.delete("order")
+        } else {
+            url.searchParams.set("order", order);
+        }
+        window.location.href = url.toString();
+        }
+
+        function goToPage(page){
+        const current_order = getParaneterByName("order");
+        const url = new URL(window.location.href)
+        if (current_order) {
+            url.searchParams.set("order", current_order);
+        }
+        url.searchParams.set("page", page)
+        window.location.href = url.toString();
+        }
+</script>

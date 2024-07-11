@@ -1,0 +1,80 @@
+{% extends 'ecommerce/base_site.html' %}
+{% load static %}
+{% block title %}دسته بندی{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/productDetail.css' %}">
+{% endblock %}
+{% block current_page_btn_about %} border-indigo-500 text-gray-900 border-b-2  {% endblock %}
+{% block content %}
+<div class="grid gap-4 grid-cols-3 mt-20 w-3/4 mx-auto">
+    <div class="bg-slate-100 rounded-lg px-5 py-3 flex">
+        <img src="https://seeklogo.com/images/D/django-logo-4C5ECF7036-seeklogo.com.png" class="max-w-28 max-h-28 p-1 border-2 border-orange-500 rounded-md" alt="">
+        <div class="mr-4">
+            <p class="font-bold">Django</p>
+            <p  style="line-height: 18px;">بک ان این پروژه توسط این فریمورک مدیریت میشود</p>
+        </div>
+    </div>
+    <div class="bg-slate-100 rounded-lg px-5 py-3 flex">
+        <img src="https://cdn3d.iconscout.com/3d/free/thumb/free-tailwind-css-11492968-9325303.png" class="max-w-28 max-h-28 p-1 border-2 border-orange-500 rounded-md" alt="">
+        <div class="mr-4">
+            <p class="font-bold">tailwindcss</p>
+            <p  style="line-height: 18px;">فرانت اند این پروژه توسط این فریمورک ساخته شده</p>
+        </div>
+    </div>
+    <div class="bg-slate-100 rounded-lg px-5 py-3 flex">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhoRj3B_xwGOVu9tawhtoJvBLLGvpRa77Z0w&s" class="max-w-28 max-h-28 p-1 border-2 border-orange-500 rounded-md" alt="">
+        <div class="mr-4">
+            <p class="font-bold">postgresql</p>
+            <p  style="line-height: 18px;">تمام داده ها در این دیتابیس ذخیره میشوند</p>
+        </div>
+    </div>
+    <div class="bg-slate-100 rounded-lg px-5 py-3 flex">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDWBDDLzxAwFec2D4iI5CkBnvnojzkI6Hqgg&s" class="max-w-28 max-h-28 p-1 border-2 border-orange-500 rounded-md" alt="">
+        <div class="mr-4">
+            <p class="font-bold">docker</p>
+            <p  style="line-height: 18px;">از این ابزار برای اجرای آسان پروژه استفاده شده</p>
+        </div>
+    </div>
+    <div class="bg-slate-100 rounded-lg px-5 py-3 flex">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBk2Wv7pi3JtY_S_H813LpokWOBWho5-lfQQ&s" class="max-w-28 max-h-28 p-1 border-2 border-orange-500 rounded-md" alt="">
+        <div class="mr-4">
+            <p class="font-bold">GitHub</p>
+            <a href="https://github.com/AdelKhedri/ecommerce" class="text-sky-600" style="line-height: 18px;">لینک صفحه گیتهاب این پروژه</a>
+        </div>
+    </div>
+</div>
+
+<p class="w-3/4 mx-auto mt-4 font-bold text-indigo-600">وضعیت کد های پروژه:</p>
+<div class="grid gap-5 mt-5 grid-cols-3 w-3/4 mx-auto">
+    <div class="bg-white">
+        <div class="flex items-center border border-slate-400 border-b-0 rounded-t-lg">
+            <img class="max-w-28 p-2" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrBIch_Bsl-Ea2qIXbpQh8cqTqsWZOHbhuww&s" alt="">
+            <div class="">
+                <p class=""><span class="font-bold me-3">55.5 %</span>HTML</p>
+                <p class="text-slate-500">اچ تی ام ال</p>
+            </div>
+        </div>
+        <p class="bg-slate-200 p-2 rounded-b-lg border-slate-400 border border-t-0">1</p>
+    </div>
+    <div class="bg-white">
+        <div class="flex items-center border border-slate-400 border-b-0 rounded-t-lg">
+            <img class="max-w-28 p-2" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcvoWimotx3k4mxT9UClT7zn0O8umnjPlnpkRZiiC2VaiqStlqtCK0Z4_pbct5ME_DsxA&usqp=CAU" alt="">
+            <div class="">
+                <p class=""><span class="font-bold me-3">27.8 %</span>CSS</p>
+                <p class="text-slate-500">سی اس اس</p>
+            </div>
+        </div>
+        <p class="bg-slate-200 p-2 rounded-b-lg border-slate-400 border border-t-0">2</p>
+    </div>
+    <div class="bg-white">
+        <div class="flex items-center border border-slate-400 border-b-0 rounded-t-lg">
+            <img class="max-w-28 p-2" src="https://static.vecteezy.com/system/resources/previews/012/697/295/non_2x/3d-python-programming-language-logo-free-png.png" alt="">
+            <div class="">
+                <p class=""><span class="font-bold me-3">16.7 %</span>Python</p>
+                <p class="text-slate-500">پایتون</p>
+            </div>
+        </div>
+        <p class="bg-slate-200 p-2 rounded-b-lg border-slate-400 border border-t-0">3</p>
+    </div>
+</div>
+{% endblock %}
